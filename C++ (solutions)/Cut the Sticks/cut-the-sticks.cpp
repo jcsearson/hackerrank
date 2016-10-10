@@ -7,11 +7,10 @@ using namespace std;
 int main(){
 	int n;
 	cin >> n;
+	cout << n << "\n";
 
 	vector<int> arr(n);
 	vector<int> temp(n);
-
-	cout << "Quant: " << n << "\n";
 
 	// Fill array with inital contents
 	for( int i = 0;i < n;i++ ){
@@ -20,46 +19,41 @@ int main(){
 	}
 
 	// Array Items [Smallest --> Largest]
-	// initialize smallest index value
 	sort(temp.begin(), temp.end());
-	int smallest = temp[0];
-	cout << "Smallest Index: " << smallest << "\n";
 
+	while(n>1){
+		// initialize smallest index value
+		int smallest = temp[0];
 
-	cout << "Original Array: ";
-	for(int k=0;k<n;k++){
-		cout << arr[k];
-	}
-	cout << "\n";
-
-
-	int counter = 0;
-	cout << "Sorted Array: ";
-	for(int m=0;m<n;m++){
-		cout << temp[m];
-		if(temp[m] == smallest){
-			counter++;
+		// check for other index where value = index[0]
+		int counter = 0;
+		for(int m=0;m<n;m++){
+			// take note of how many instances
+			if(temp[m] == smallest){
+				counter++;
+			}
 		}
-	}
-	cout << "\n";
 
-
-	cout << "New Sorted Array (after first round of cuts): ";
-	for(int y=0;y<n;y++){
-		for(int z=0;z<counter;z++){
-			temp.pop_back();
-		}
+		// Move values at index spots X places left
+		// equal to # of instances stored as "counter"
+		for(int y=0;y<n;y++){
 		temp[y] = temp[y+counter];
+			// remove index locations at end of array now that values moved up
+			for(int z=0;z<counter;z++){
+				temp.pop_back();
+			}
+		}
+
+		// adjust the variable storing total # of index accordingly
+		n = n - counter;
+
+		// safety because once total index in array equal 1, OK to end sequence
+		if(n==0){
+			return 0;
+		}
+
+		// output size of current array
+		cout << n << "\n";
 	}
-	n = n - counter;
-	for(int q=0;q<n;q++){
-		cout << temp[q];
-	}
-	cout << "\n";
-
-
-	cout << "Quant (NEW): " << n << "\n";
-
-
 	return 0;
 }
